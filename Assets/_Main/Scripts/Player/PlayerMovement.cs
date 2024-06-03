@@ -5,7 +5,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("MOVEMENT")]
     [SerializeField] private float smoothTime = 1.2f;
     [SerializeField] private float moveSpeed = 2.0f;
-    [SerializeField] private float rotationSpeed = 10.0f;
 
     private CharacterController characterController;
     private Vector2 currentInputVector;
@@ -25,7 +24,9 @@ public class PlayerMovement : MonoBehaviour
     private void HandleMovement()
     {
         currentInputVector = Vector2.SmoothDamp(currentInputVector, InputManager.Instance.GetMovementVector(), ref smoothInputVelocity, smoothTime);
-        Vector3 moveDir = currentInputVector.x * transform.right + currentInputVector.y * transform.forward;
+        Vector3 moveDirX = currentInputVector.x * Vector3.right;
+        Vector3 moveDirY = currentInputVector.y * Vector3.forward;
+        Vector3 moveDir = moveDirX + moveDirY;
 
         characterController.Move(moveDir * moveSpeed * Time.deltaTime);
     }

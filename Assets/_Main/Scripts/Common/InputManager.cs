@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,11 +6,13 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager Instance { get; private set; }
 
+    public event EventHandler OnInteractPerformed;
+    public event EventHandler OnShootPerformed;
+    public event EventHandler OnFillPerformed;
+
     [SerializeField] private LayerMask groundMask;
 
     private PlayerInputAsset playerInputAsset;
-
-    private Vector3 lastMousePosition;
 
     private void Awake()
     {
@@ -25,6 +28,25 @@ public class InputManager : MonoBehaviour
         playerInputAsset = new PlayerInputAsset();
 
         playerInputAsset.Player.Enable();
+
+        playerInputAsset.Player.Interact.performed += Interact_performed;
+        playerInputAsset.Player.Shoot.performed += Shoot_performed;
+        playerInputAsset.Player.Fill.performed += Fill_performed;
+    }
+
+    private void Fill_performed(InputAction.CallbackContext obj)
+    {
+        OnFillPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Shoot_performed(InputAction.CallbackContext obj)
+    {
+        OnShootPerformed?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Interact_performed(InputAction.CallbackContext obj)
+    {
+        OnInteractPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     public Vector2 GetMovementVector() => playerInputAsset.Player.Movement.ReadValue<Vector2>();
