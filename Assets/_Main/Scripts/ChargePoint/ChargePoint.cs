@@ -94,22 +94,22 @@ public class ChargePoint : MonoBehaviour, IInteractable, ITargatable
 
         if (currentState == State.CHARGING)
         {
+            if (Vehicle.GetCurrentCharge() >= Vehicle.GetChargeMax())
+            {
+                ChangeState(State.IDLE);
+
+                chargeTimer = chargeTimerMax;
+
+                OnVehicleChargeCompleted?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             chargeTimer -= Time.deltaTime;
             if (chargeTimer <= 0.0f)
             {
                 chargeTimer = chargeTimerMax;
 
-                if (Vehicle.GetCurrentCharge() >= Vehicle.GetChargeMax())
-                {
-                    ChangeState(State.IDLE);
-
-                    OnVehicleChargeCompleted?.Invoke(this, EventArgs.Empty);
-
-                    return;
-                }
-
                 currentCharge -= chargeRateo;
-
                 Vehicle.AddCharge(chargeRateo);
             }
         }

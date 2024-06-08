@@ -39,6 +39,19 @@ public class Vehicle : MonoBehaviour
         delayTimer = delayTimerMax;
     }
 
+    private void Start()
+    {
+        chargePoint.OnVehicleChargeCompleted += ChargePoint_OnVehicleChargeCompleted;
+    }
+
+    private void ChargePoint_OnVehicleChargeCompleted(object sender, EventArgs e)
+    {
+        targetPosition = new Vector3(vehicleExitTarget.position.x, transform.position.y, vehicleExitTarget.position.z);
+        isWaiting = true;
+
+        OnChargeCompleted?.Invoke(this, EventArgs.Empty);
+    }
+
     private void Update()
     {
         if (isMoving)
@@ -91,14 +104,6 @@ public class Vehicle : MonoBehaviour
         currentCharge += charge;
 
         OnChargeChanged?.Invoke(this, GetCurrentChargeNormalized());
-
-        if (currentCharge >= chargeMax)
-        {
-            targetPosition = new Vector3(vehicleExitTarget.position.x, transform.position.y, vehicleExitTarget.position.z);
-            isWaiting = true;
-
-            OnChargeCompleted?.Invoke(this, EventArgs.Empty);
-        }
     }
 
     public float GetCurrentCharge() => currentCharge;

@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform energyCellContainer;
     [SerializeField] private Transform ammoContainer;
 
+    [SerializeField] private AudioSource environmentMusic;
+
     private List<ChargePoint> chargePointList;
     private float timer;
     private bool isTimerStarted;
@@ -130,6 +132,8 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         Time.timeScale = 0.0f;
+
+        environmentMusic.Stop();
     }
 
     private void Player_OnDie(object sender, EventArgs e)
@@ -161,6 +165,8 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         isTimerStarted = true;
+
+        environmentMusic.Play();
     }
 
     public void AddChargePoint(ChargePoint chargePoint)

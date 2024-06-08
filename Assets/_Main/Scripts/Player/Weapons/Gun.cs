@@ -12,6 +12,8 @@ public abstract class Gun : MonoBehaviour
     [SerializeField] private Transform bulletContainer;
     [SerializeField] private float damage = 0.25f;
 
+    [SerializeField] private AudioSource shootAudioSource;
+
     private int currentAmmo;
 
     private void Start()
@@ -36,6 +38,8 @@ public abstract class Gun : MonoBehaviour
         currentAmmo--;
 
         OnShoot?.Invoke(this, currentAmmo);
+
+        shootAudioSource.Play();
 
         if (currentAmmo <= 0)
         {

@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject descriptionPanel;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private GameObject endGameMenu;
+    [SerializeField] private AudioSource buttonAudio;
+    [SerializeField] private AudioClip[] audioClipArray;
 
     [SerializeField, TextArea(1, 10)] private string[] pageArray;
 
@@ -35,12 +37,15 @@ public class MainMenu : MonoBehaviour
                 GameManager.Instance.StartGame();
             }
 
+            buttonAudio.Play();
+
             UpdateText();
         });
     }
 
     private void Start()
     {
+        buttonAudio.clip = audioClipArray[0];
         UpdateText();
 
         GameManager.Instance.OnGameEnded += GameManager_OnGameEnded;

@@ -34,14 +34,17 @@ public class Runner : Enemy
     {
         base.ChaseTarget();
 
-        if (!target.GetComponent<Player>())
+        if (target)
         {
-            Transform playerTargetTransform = GameManager.Instance.GetPlayer().GetTarget();
-            float distanceFromPlayer = Vector3.Distance(selfTarget.position, playerTargetTransform.position);
-            float distanceFromTarget = Vector3.Distance(selfTarget.position, target.position);
-            if (distanceFromPlayer <= distanceFromTarget)
+            if (!target.GetComponent<Player>())
             {
-                target = playerTargetTransform;
+                Transform playerTargetTransform = GameManager.Instance.GetPlayer().GetTarget();
+                float distanceFromPlayer = Vector3.Distance(selfTarget.position, playerTargetTransform.position);
+                float distanceFromTarget = Vector3.Distance(selfTarget.position, target.position);
+                if (distanceFromPlayer <= distanceFromTarget)
+                {
+                    target = playerTargetTransform;
+                }
             }
         }
 
